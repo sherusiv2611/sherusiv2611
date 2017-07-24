@@ -4,14 +4,14 @@ import numpy as np
 import random
 from itertools import izip
 
-def compute_ctd(clts):
+def calc_ctd(clts):
     return [np.mean(cluster, axis=0) for cluster in clts]
 
 def kmeans(k, ctd, points):
     clts = [[] for _ in range(k)]
     for point in points:
-        clts[closest_centroid(point, ctd)].append(point)
-    new_ctd = compute_ctd(clts)
+        clts[cls_ctd(point, ctd)].append(point)
+    new_ctd = calc_ctd(clts)
     global cl
     cl-=1
 
@@ -20,7 +20,7 @@ def kmeans(k, ctd, points):
 
     return clts
 
-def closest_centroid(point, ctd):
+def cls_ctd(point, ctd):
     min_distance = float('inf')
     belongs_to_cluster = None
     for j, centroid in enumerate(ctd):
@@ -52,11 +52,11 @@ k = 5
 
 ctd = random.sample(data, k)
 clts = kmeans(k, ctd, data)
-new_ctd = compute_ctd(clts)
+new_ctd = calc_ctd(clts)
 img = []
 
 for p in data:
-    img.append(new_ctd[closest_centroid(p, new_ctd)])
+    img.append(new_ctd[cls_ctd(p, new_ctd)])
 print ("executing")
 image  = np.array(img,  dtype=np.uint8).reshape(original_shape)
 cv2.cvtColor(image,cv2.COLOR_LAB2BGR, image)
